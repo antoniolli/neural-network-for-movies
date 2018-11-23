@@ -1,0 +1,16 @@
+Perceptron
+- Um ou mais inputs
+- Bias
+- Função de ativação
+
+Algoritmo
+1 Perceptron recebe inputs
+2 Multiplica pelos pesos (inicialmente randomizados)
+3 Passa para a função de ativação
+4 Produz a saida
+
+Weight
+
+
+X atores diretores genero budget - inputs (testar variance como input)
+y profit - output
