@@ -2,6 +2,7 @@ from neuralNetwork import NeuralNetwork
 from util import Util
 from movies import Movies
 from sklearn import preprocessing
+from pprint import pprint
 
 #Busca a lista
 moviesData = Util.getData()
@@ -19,26 +20,50 @@ moviesData['director'] = directorLabel.transform(moviesData['director'])
 genreLabel.fit(moviesData['genre'])
 moviesData['genre'] = genreLabel.transform(moviesData['genre'])
 
-
-#pprint(y.head())
-#pprint(X['actor'])
-#pprint(moviesData.head())
-#pprint(actorLabel.classes_[0])
-#pprint(list(genreLabel.inverse_transform([1, 2])))
-#pprint(classification_report(y_test, predictions, target_names=target_names))
-
 #Separamos os inputs do output
-X = moviesData.iloc[:, 0:8]
+X = moviesData.iloc[:, 0:6]
 y = moviesData['profit']
 
-X_train, X_test, y_train, y_test = NeuralNetwork.splitData(X, y)
+#1
+trainSize = 0.8
+neurons = [13,13,13]
+iterations = 1000000
 
-X_train, X_test = NeuralNetwork.normalizeData(X_train, X_test)
+# for i in range(10):
 
-trainedAI = NeuralNetwork.trainingAI(X_train, y_train)
+#     X_train, X_test, y_train, y_test = NeuralNetwork.splitData(X, y, trainSize)
 
-Util.saveTrainedAI(trainedAI, "teste_um")
+#     X_train, X_test = NeuralNetwork.normalizeData(X_train, X_test)
 
-predictions = NeuralNetwork.predict(trainedAI, X_test)
+#     trainedAI = NeuralNetwork.trainingAI(X_train, y_train, neurons, iterations)
 
-NeuralNetwork.quadritc(y_test, predictions)
+#     Util.saveTrainedAI(trainedAI, "neuralNetwork_" + str(i))
+
+#     predictions = NeuralNetwork.predict(trainedAI, X_test)
+
+#     result = NeuralNetwork.quadritc(y_test, predictions)
+
+#     Util.saveResults(result, 1)
+
+trainedAI = Util.openTrainedAI("neuralNetwork_" + "1")
+
+actorList = Util.listAll(actorLabel)
+genreList = Util.listAll(genreLabel)
+directorList = Util.listAll(directorLabel)
+pprint(actorList)
+pprint("---------------------")
+pprint(directorList)
+pprint("---------------------")
+pprint(genreList)
+pprint("---------------------")
+
+
+actorIndex = Util.findIndex(actorLabel, "Zoe Saldana")
+pprint(actorIndex)
+directorIndex = Util.findIndex(directorLabel, "Francis Ford Coppola")
+pprint(directorIndex)
+genreIndex = Util.findIndex(genreLabel, "Comedy")
+pprint(genreIndex)
+
+pred = Util.preparePredictions(1000000, 2000000, actorIndex, directorIndex, 120, genreIndex)
+pprint(NeuralNetwork.predict(trainedAI, pred)[0])
